@@ -9,7 +9,7 @@ import css from '../../components/ContactForm/ContactForm.module.css';
 const ContactForm = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
-  const [formData, setFormData] = useState({ name: '', number: '' });
+  const [formData, setFormData] = useState({ name: '', phone: '' });
 
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
@@ -17,7 +17,7 @@ const ContactForm = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    const { name, number } = formData;
+    const { name, phone } = formData;
 
     const isNameExists = contacts.some(
       contact => contact.name.toLowerCase() === name.toLowerCase()
@@ -29,8 +29,8 @@ const ContactForm = () => {
     }
 
     const id = nanoid();
-    dispatch(addAsyncContact({ id, name, number }));
-    setFormData({ name: '', number: '' });
+    dispatch(addAsyncContact({ id, name, phone }));
+    setFormData({ name: '', phone: '' });
   };
 
   const handleChange = event => {
@@ -66,7 +66,7 @@ const ContactForm = () => {
           autoComplete="off"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
-          value={formData.number}
+          value={formData.phone}
           onChange={handleChange}
           placeholder="+48 123-456-789"
         />
