@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from '../../redux/contactSlice';
+import { addAsyncContact } from '../../redux/contactSlice';
 import { nanoid } from 'nanoid';
 import Notiflix from 'notiflix';
 import { getContacts } from '../../redux/selectors';
@@ -29,7 +29,7 @@ const ContactForm = () => {
     }
 
     const id = nanoid();
-    dispatch(addContact({ id, name, number }));
+    dispatch(addAsyncContact({ id, name, number }));
     setFormData({ name: '', number: '' });
   };
 

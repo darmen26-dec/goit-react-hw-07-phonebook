@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteContact } from '../../redux/contactSlice';
+import { fetchContacts, deleteAsyncContact } from '../../redux/contactSlice';
 import { getContacts, getFilter } from '../../redux/selectors';
 import css from './ContactList.module.css';
 
@@ -13,6 +13,18 @@ const ContactList = () => {
     contact.name.toLowerCase().includes(filterStatus.status.toLowerCase())
   );
 
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
+  const deleteContactById = async contactId => {
+    try {
+      await dispatch(deleteAsyncContact(contactId));
+    } catch (error) {
+      console.error('Error deleting contact:', error.message);
+    }
+  };
+
   return (
     <div className={css.contacts}>
       <ul className={css.contactsList}>
@@ -23,7 +35,7 @@ const ContactList = () => {
             <button
               className={css.contactsBtn}
               onClick={() => {
-                dispatch(deleteContact(contact.id));
+                dispatch(deleteContactById(contact.id));
               }}
             >
               Delete

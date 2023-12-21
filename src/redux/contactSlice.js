@@ -1,26 +1,72 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { nanoid } from 'nanoid';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-const savedContacts = JSON.parse(localStorage.getItem('contacts')) ?? [
-  { id: nanoid(), name: 'Rosie Simpson', number: '459-12-56' },
-  { id: nanoid(), name: 'Hermione Kline', number: '443-89-12' },
-  { id: nanoid(), name: 'Eden Clements', number: '645-17-79' },
-  { id: nanoid(), name: 'Annie Copeland', number: '227-91-26' },
-];
+export const fetchContacts = createAsyncThunk(
+  'contacts/fetchContacts',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        'https://65849978022766bcb8c76597.mockapi.io/darmen26-dec/contacts'
+      );
+      if (!response.ok) {
+        throw new Error('Failed to fetch contacts');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const addAsyncContact = createAsyncThunk(
+  'contacts/addAsyncContact',
+  async contact => {
+    const response = await fetch(
+      'https://65849978022766bcb8c76597.mockapi.io/darmen26-dec/contacts',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(contact),
+      }
+    );
+    const data = await response.json();
+    return data;
+  }
+);
+
+export const deleteAsyncContact = createAsyncThunk(
+  'contacts/deleteAsyncContact',
+  async contactId => {
+    await fetch(
+      `https://65849978022766bcb8c76597.mockapi.io/darmen26-dec/contacts/${contactId}`,
+      {
+        method: 'DELETE',
+      }
+    );
+    return contactId;
+  }
+);
+
+const initialContacts = [];
 
 const contactSlice = createSlice({
   name: 'contacts',
-  initialState: savedContacts,
-  reducers: {
-    addContact(state, action) {
-      const newState = Array.isArray(state) ? state : [];
-      return newState.concat(action.payload);
-    },
-    deleteContact(state, action) {
-      return state.filter(contact => contact.id !== action.payload);
-    },
+  initialState: initialContacts,
+  reducers: {},
+  extraReducers: builder => {
+    builder
+      .addCase(fetchContacts.fulfilled, (state, action) => {
+        return action.payload;
+      })
+      .addCase(addAsyncContact.fulfilled, (state, action) => {
+        state.push(action.payload);
+      })
+      .addCase(deleteAsyncContact.fulfilled, (state, action) => {
+        return state.filter(contact => contact.id !== action.payload);
+      });
   },
 });
 
-export const { addContact, deleteContact } = contactSlice.actions;
-export const contactReducer = contactSlice.reducer;
+export const { reducer: contactReducer } = contactSlice;
