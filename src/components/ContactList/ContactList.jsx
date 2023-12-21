@@ -31,7 +31,7 @@ const ContactList = () => {
         {filteredContacts.map(contact => (
           <li className={css.contactsItem} key={contact.id}>
             <p className={css.contactsName}>{contact.name}</p>
-            <p className={css.contactsNumber}>{contact.number}</p>
+            <p className={css.contactsNumber}>{contact.phone}</p>
             <button
               className={css.contactsBtn}
               onClick={() => {
