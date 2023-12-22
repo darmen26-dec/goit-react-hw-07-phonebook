@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addAsyncContact } from '../../redux/contactSlice';
+import { addAsyncContact } from '../../redux/operations';
 import { nanoid } from 'nanoid';
 import Notiflix from 'notiflix';
 import { getContacts } from '../../redux/selectors';
