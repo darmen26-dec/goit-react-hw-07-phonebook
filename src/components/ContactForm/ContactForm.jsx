@@ -62,7 +62,7 @@ const ContactForm = () => {
           className={css.input}
           id="number"
           type="tel"
-          name="number"
+          name="phone"
           autoComplete="off"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
