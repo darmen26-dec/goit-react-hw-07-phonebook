@@ -5,11 +5,9 @@ import {
   deleteAsyncContact,
 } from './operations';
 
-const initialContacts = [];
-
 const contactSlice = createSlice({
   name: 'contacts',
-  initialState: initialContacts,
+  initialState: [],
   extraReducers: builder => {
     builder
       .addCase(fetchContacts.fulfilled, (state, action) => {

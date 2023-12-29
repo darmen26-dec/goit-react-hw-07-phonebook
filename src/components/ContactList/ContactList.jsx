@@ -17,9 +17,9 @@ const ContactList = () => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
-  const deleteContactById = async contactId => {
+  const deleteContactById = contactId => {
     try {
-      await dispatch(deleteAsyncContact(contactId));
+      dispatch(deleteAsyncContact(contactId));
     } catch (error) {
       console.error('Error deleting contact:', error.message);
     }
@@ -34,9 +34,7 @@ const ContactList = () => {
             <p className={css.contactsNumber}>{contact.phone}</p>
             <button
               className={css.contactsBtn}
-              onClick={() => {
-                dispatch(deleteContactById(contact.id));
-              }}
+              onClick={() => deleteContactById(contact.id)}
             >
               Delete
             </button>
